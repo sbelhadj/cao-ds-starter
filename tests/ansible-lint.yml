@@ -1,0 +1,13 @@
+---
+# ansible-lint settings used by "make lint" and by the autograder.
+profile: moderate
+offline: true
+exclude_paths:
+  - .github/
+  - .devcontainer/
+  - .ci/
+  - tests/
+  - targets/
+  - reference/
+  - legacy/
+  - playbooks/.grader-site.yml

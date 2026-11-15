@@ -1,0 +1,19 @@
+---
+# Inputs of the role common. The inventory may override any of them.
+common_packages:
+  - nginx
+  - tree
+  - jq
+
+common_users:
+  - name: deploy
+    shell: /bin/bash
+  - name: monitor
+    shell: /usr/sbin/nologin
+
+common_motd: "SESAME Shop - managed by Ansible. Do not edit by hand."
+
+common_app_dir: /opt/shop
+common_app_owner: deploy
+
+common_harden_nginx: true

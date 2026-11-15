@@ -1,0 +1,7 @@
+---
+# Autograder, Part B: apply only the role common to every server.
+- name: Grader - role common alone
+  hosts: shop
+  become: true
+  roles:
+    - common

@@ -1,0 +1,37 @@
+{# DS, Part C: the home page of one shop server.
+   Copy this file to roles/shopfront/templates/ and replace every TODO
+   with Jinja2. Keep the HTML around it exactly as it is: the autograder
+   reads the page line by line. Delete this comment block when done. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TODO-1</title>
+</head>
+<body style="font-family: sans-serif; background: TODO-2; color: white; padding: 2em">
+  <h1>TODO-1</h1>
+  <p>TODO-3</p>
+  <p>Served by TODO-4</p>
+  <p>Running TODO-5</p>
+  <h2>Catalog</h2>
+  <ul>
+TODO-6
+  </ul>
+  <p>Ships to: TODO-7</p>
+  <p>Catalog API TODO-8 - Open until TODO-9</p>
+</body>
+</html>
+{#
+TODO-1  shop_name
+TODO-2  shopfront_color
+TODO-3  tagline
+TODO-4  the inventory name of this host
+TODO-5  the distribution and its version, from the facts: "Ubuntu 24.04"
+TODO-6  one line per product of the list products, exactly in this form:
+            <li>NAME | SKU | PRICE TND | AVAILABILITY</li>
+        PRICE with three decimals (2499.000), AVAILABILITY "in stock" when
+        stock is above 0, otherwise "sold out"
+TODO-7  the list ship_to, joined with ", "
+TODO-8  api_version
+TODO-9  closing_time
+#}

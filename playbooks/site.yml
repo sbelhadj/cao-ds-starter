@@ -1,0 +1,11 @@
+---
+# DS: the SESAME Shop playbook. Write three plays, in this order:
+#
+#   1. hosts: shop  -> role common         (Part B)
+#   2. hosts: app   -> role shopfront      (Part C); this play also loads the
+#                      catalog with:  vars_files: ../data/catalog.yml
+#   3. hosts: lb    -> role loadbalancer   (Part D)
+#
+# Every play needs become: true.
+# Run it:        make run
+# Run it again:  the PLAY RECAP must show changed=0 on all three servers.

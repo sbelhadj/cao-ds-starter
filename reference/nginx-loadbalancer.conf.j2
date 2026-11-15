@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+# DS, Part D: nginx site of the load balancer.
+# Copy to roles/loadbalancer/templates/ and complete the TODO.
+upstream shop_backend {
+    # TODO: one line per host of the group app, built with a for loop:
+    #     server <that host's internal_address>:<the backend port>;
+    # Read the group with groups[...] and each host's address with hostvars[...].
+    # Never write a host name or an address by hand here.
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    location / {
+        proxy_pass http://shop_backend;
+        proxy_set_header Host $host;
+        add_header X-Upstream $upstream_addr always;
+    }
+}

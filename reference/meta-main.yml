@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: CHANGE_ME
+  author: your GitHub username
+  description: CHANGE_ME, one sentence
+  license: MIT
+  min_ansible_version: "2.17"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+dependencies: []

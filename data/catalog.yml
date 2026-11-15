@@ -1,0 +1,33 @@
+---
+# SESAME Shop catalog, written by the marketing team.
+#
+# Part A2: this file is broken. Either it does not load at all, or it loads
+# with six values that are not the ones the team meant. Fix how each value is
+# written so that it matches the table in the DS statement. Do not change the
+# values themselves, do not add or remove keys.
+#
+# Check with:  make test-yaml
+
+shop_name: SESAME Shop
+tagline: Shop smart: pay less
+api_version: 1.10
+closing_time: 22:30
+ship_to: [TN, DZ, NO, FR]
+
+products:
+  - name: Laptop ThinkPad E14
+    sku: 004517
+    price: 2499.0
+    stock: 12
+  - name: Cable USB-C #2
+    sku: "120034"
+    price: 19.5
+    stock: 140
+  - name: Headset Jabra Evolve2
+    sku: "310007"
+    price: 349.9
+    stock: 0
+  - name: Mouse Logitech M185
+    sku: "205561"
+    price: 45.0
+    stock: 37

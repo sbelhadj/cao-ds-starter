@@ -1,0 +1,26 @@
+{
+  "name": "CAO DS - Ansible",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "hostRequirements": { "cpus": 2 },
+  "postCreateCommand": "bash scripts/post-create.sh",
+  "forwardPorts": [8080, 8081, 8082],
+  "portsAttributes": {
+    "8080": { "label": "lb1 (the shop)" },
+    "8081": { "label": "app1" },
+    "8082": { "label": "app2" }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "chat.disableAIFeatures": true,
+        "github.copilot.enable": { "*": false },
+        "github.copilot.nextEditSuggestions.enabled": false,
+        "editor.inlineSuggest.enabled": false,
+        "files.associations": { "*.j2": "jinja" }
+      }
+    }
+  }
+}

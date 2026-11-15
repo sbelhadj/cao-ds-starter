@@ -1,0 +1,10 @@
+---
+# DS: variables for the hosts of the group app (app1 and app2).
+#
+# Part C: the background colour of the shop page for this group:
+#   shopfront_color   a colour such as "#1E8F8A", different from the role default
+#
+# Part E: one more line, pointing at the encrypted secret:
+#   shopfront_api_key: "{{ vault_shop_api_key }}"
+#
+# Write your variables below this line.

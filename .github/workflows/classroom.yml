@@ -1,0 +1,139 @@
+name: Autograding
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible
+        run: pip install -r tests/requirements.txt
+
+      - name: Start three fresh servers
+        run: bash tests/ci-targets.sh
+
+      - name: A2 YAML
+        id: yaml
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "A2: data/catalog.yml has the expected values and types"
+          command: bash tests/grade.sh yaml
+          timeout: 2
+          max-score: 2
+
+      - name: A1 Inventory
+        id: inventory
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "A1, C: groups app, lb, shop; colours per group and per host"
+          command: bash tests/grade.sh inventory
+          timeout: 2
+          max-score: 1
+
+      - name: B Role common
+        id: common
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "B: role common converges, second run changes nothing"
+          command: bash tests/grade.sh common
+          timeout: 8
+          max-score: 3
+
+      - name: Structure and lint
+        id: structure
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "C, D: three roles, three plays, ansible-lint clean"
+          command: bash tests/grade.sh structure
+          timeout: 5
+          max-score: 2
+
+      - name: First run of site.yml (not graded)
+        run: bash tests/grade.sh first-run
+
+      - name: C Shop servers
+        id: app
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "C: app1 and app2 serve the right page on port 8080"
+          command: bash tests/grade.sh app
+          timeout: 2
+          max-score: 3
+
+      - name: D Load balancer
+        id: lb
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "D: lb1 balances over app1 and app2, built from the inventory"
+          command: bash tests/grade.sh lb
+          timeout: 2
+          max-score: 2
+
+      - name: Idempotency
+        id: idempotent
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Second run of site.yml reports changed=0"
+          command: bash tests/grade.sh idempotent
+          timeout: 6
+          max-score: 2
+
+      - name: Drift, handlers, maintenance
+        id: drift
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "C, D: hand edits reverted with handlers; maintenance on and off"
+          command: bash tests/grade.sh drift
+          timeout: 10
+          max-score: 2
+
+      - name: E Vault
+        id: vault
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "E: API key encrypted, delivered with mode 600, no_log"
+          command: bash tests/grade.sh vault
+          timeout: 3
+          max-score: 2
+
+      - name: Answers
+        id: answers
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "ANSWERS.md complete"
+          command: bash tests/grade.sh answers
+          timeout: 1
+          max-score: 1
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          YAML_RESULTS: "${{ steps.yaml.outputs.result }}"
+          INVENTORY_RESULTS: "${{ steps.inventory.outputs.result }}"
+          COMMON_RESULTS: "${{ steps.common.outputs.result }}"
+          STRUCTURE_RESULTS: "${{ steps.structure.outputs.result }}"
+          APP_RESULTS: "${{ steps.app.outputs.result }}"
+          LB_RESULTS: "${{ steps.lb.outputs.result }}"
+          IDEMPOTENT_RESULTS: "${{ steps.idempotent.outputs.result }}"
+          DRIFT_RESULTS: "${{ steps.drift.outputs.result }}"
+          VAULT_RESULTS: "${{ steps.vault.outputs.result }}"
+          ANSWERS_RESULTS: "${{ steps.answers.outputs.result }}"
+        with:
+          runners: yaml,inventory,common,structure,app,lb,idempotent,drift,vault,answers

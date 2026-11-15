@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+# DS, Part C: nginx site of a shop server.
+# Copy to roles/shopfront/templates/ and replace the two TODOs with variables.
+server {
+    listen TODO-port default_server;
+    server_name _;
+    root TODO-root;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location = /health {
+        default_type text/plain;
+    }
+}

@@ -1,0 +1,51 @@
+---
+# Role common: the base every SESAME Shop server needs (lb1, app1, app2).
+#
+# A colleague translated legacy/bootstrap.sh into this role in a hurry.
+# It does not even load, and once it loads, its second run is not clean.
+#
+# Part B: fix it. Keep WHAT it does, change HOW it does it, so that:
+#   - the first run reaches the state described in the DS statement,
+#   - a second run reports changed=0 and fails nothing,
+#   - ansible-lint finds nothing in this role (make lint).
+# You may rewrite, merge or split tasks. Do not rename the role or its variables.
+
+- name: Install the base packages
+  ansible.builtin.shell: apt-get update && apt-get install -y {{ common_packages | join(' ') }}
+
+- name: Create the operations users
+  ansible.builtin.command: useradd --create-home --shell {{ item.shell }} {{ item.name }}
+  loop: "{{ common_users }}"
+
+- name: Write the message of the day
+  ansible.builtin.shell: echo "{{ common_motd }}" > /etc/motd
+
+- name: Create the application folder
+  ansible.builtin.file:
+    path: {{ common_app_dir }}
+    state: directory
+
+- name: Give the application folder to its owner
+  ansible.builtin.command: chown {{ common_app_owner }} {{ common_app_dir }}
+
+- name: Start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Harden nginx
+  ansible.builtin.template:
+    src: security.conf.j2
+    dest: /etc/nginx/conf.d/00-security.conf
+    mode: "0644"
+  notify: reload nginx
+  when: "{{ common_harden_nginx }}"
+
+- name: Read the kernel version
+  ansible.builtin.command: uname -r
+  register: kernel
+
+- name: Show the kernel version
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }} runs kernel {{ kernel.stdout }}"

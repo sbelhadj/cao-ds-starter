@@ -1,0 +1,23 @@
+# Written by the target scripts and the autograder
+inventory/generated.ini
+inventory/ci.ini
+.ci/
+.ci_key
+.ci_key.pub
+.ci_vault_pass
+playbooks/.grader-site.yml
+
+# Python and Ansible
+__pycache__/
+*.retry
+.ansible/
+
+# Never commit credentials or vault passwords
+*.pem
+*.key
+.env
+id_*
+cao_lab*
+.vault_pass*
+*.vault_pass
+.cao_ds_vault_pass

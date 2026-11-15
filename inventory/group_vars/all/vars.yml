@@ -1,0 +1,13 @@
+---
+# DS: variables for every server of SESAME Shop.
+#
+# Part C: the shop-wide maintenance switch, a boolean that is off:
+#   shop_maintenance
+#
+# Part D: wire the two roles together. They must not read each other's
+# variables. Define one shop-wide port and give it to both roles:
+#   shop_backend_port           the number 8080
+#   shopfront_port              from shop_backend_port
+#   loadbalancer_backend_port   from shop_backend_port
+#
+# Write your variables below this line.
